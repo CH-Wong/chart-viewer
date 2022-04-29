@@ -15,3 +15,7 @@ export const firebaseConfig = {
   messagingSenderId: "774792325510",
   appId: "1:774792325510:web:8bc61e5aebafe8b25ba407"
 };
+
+
+export const email = "w.chunheung@gmail.com"
+export const password = "hellohellotesttest"
