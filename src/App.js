@@ -1,74 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
-
-import { firebaseConfig, email, password } from './firebaseConfig.js'
-import { initializeApp } from "firebase/app";
-
-
 import * as d3 from "d3";
-import { getDatabase, ref, child, get } from "firebase/database";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
-# https://github.com/Senakbulut/BarChart/blob/feature/bar/src/components/BarChart.js
-
-initializeApp(firebaseConfig);
-
-function getData(user, dBRef, address, outputArray) {
-
-    get(child(dBRef, address), user)
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log(snapshot.val())
-  
-        for (let key in snapshot.val()) {
-            outputArray.push(snapshot.val()[key])
-        };
-  
-      } else {
-        console.log("No data available");
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-  
-    return outputArray;
-  };
-
-async function formatData() {
-    var outputArray = [];
-    const auth = getAuth();
-    const dbRef = ref(getDatabase());
-
-    await signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-        // Signed in 
-        var user = userCredential.user;
-        var temperature = [];
-        var humidity = [];
-        var time = [];
-
-        getData(user, dbRef, 'workyroom/temperature', temperature);
-        getData(user, dbRef, 'workyroom/humidity', humidity);
-        getData(user, dbRef, 'workyroom/time', time);
-
-        time.forEach(function(element, index) {
-        outputArray.push({"time": element*1000, "temperature": temperature[index], "humidity": humidity[index]})
-        })
-
-        return outputArray
-        
-    })
-    .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-    });
-}
-
 
 // Copyright 2021 Observable, Inc.
 // Released under the ISC license.
 // https://observablehq.com/@d3/line-chart
-function setChartData(data, {
+function LineChart(data, {
   x = ([x]) => x, // given d in data, returns the (temporal) x-value
   y = ([, y]) => y, // given d in data, returns the (quantitative) y-value
   defined, // for gaps in data
@@ -154,22 +90,37 @@ function setChartData(data, {
 }
 
 
+function Chart(data) {
+  const width = 10;
+
+  return LineChart(data, {
+    x: d => d.time,
+    y: d => d.temperature,
+    yLabel: "↑ Daily close ($)",
+    width,
+    height: 500,
+    color: "steelblue"
+  })
+}
 
 function App() {
-  const [chartData, setChartData]  = useState({});
+  var data = [
+    {"time": 1651518737, "temperature": 25.0, "humidity": 27.0},
+    {"time": 1651518747, "temperature": 26.0, "humidity": 22.0},
+    {"time": 1651518757, "temperature": 27.0, "humidity": 23.0},
+    {"time": 1651518767, "temperature": 28.0, "humidity": 25.0},
+    {"time": 1651518777, "temperature": 29.0, "humidity": 28.0},
+    {"time": 1651518787, "temperature": 25.0, "humidity": 29.0},
+    {"time": 1651518797, "temperature": 26.0, "humidity": 22.0},
+  ]
 
   return (
     <div className="App">
-      <header className="App-header">
-        <setChartData data={data} />
-      </header>
+      <Chart data={data}></Chart>
     </div>
   );
 }
 
-
-// NEXT -> https://github.com/recharts/recharts
-// https://reactjs.org/docs/thinking-in-react.html
 export default App;
 
 
