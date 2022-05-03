@@ -4,6 +4,9 @@ import React from "react";
 import * as d3 from "d3";
 import "./App.css"
  
+
+
+
 export const MultilineChart = ({ data, dimensions }) => {
   const svgRef = React.useRef(null);
   const { width, height, margin } = dimensions;
@@ -105,7 +108,7 @@ export const LineChart = ({
   React.useEffect(() => {
       // Compute values.
 
-  const X = d3.map(data, d => new Date(d.time * 1000));
+  const X = d3.map(data, d => new Date(d.time));
   const Y = d3.map(data, d => d.temperature);
   const I = d3.map(data, (_, i) => i);
   if (defined === undefined) defined = (d, i) => !isNaN(X[i]) && !isNaN(Y[i]);
@@ -169,6 +172,8 @@ export const LineChart = ({
 
   return <svg ref={svgRef} width={svgWidth} height={svgHeight} />;
 }
+
+
 
 
 export default MultilineChart;
