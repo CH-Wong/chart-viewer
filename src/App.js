@@ -70,18 +70,15 @@ export default function App() {
       left: 60
     }
   };
-  var data = [];
 
-  getData(data, 'sleepyroom');
-  
   return (
     <div className="App">
       {/* <MultilineChart
         data={[portfolioData, schcData, vcitData]}
         dimensions={dimensions}
       /> */}
-      <LineChart data={data} dimensions={dimensions} yLabel="Workyroom"/>
-      <LineChart data={data} dimensions={dimensions} yLabel="Storage"/>
+      <LineChart data={getData('sleepyroom')} dimensions={dimensions} yLabel="Workyroom"/>
+      <LineChart data={getData('sleepyroom')} dimensions={dimensions} yLabel="Storage"/>
     </div>
   );
 }
