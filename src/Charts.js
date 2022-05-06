@@ -1,19 +1,20 @@
 
 /** MultilineChart.js */
-import React from "react";
+import {useRef, useEffect, useState} from "react";
 import * as d3 from "d3";
 import "./App.css"
- 
-
 
 
 export const MultilineChart = ({ data, dimensions }) => {
-  const svgRef = React.useRef(null);
+  const svgRef = useRef(null);
   const { width, height, margin } = dimensions;
   const svgWidth = width + margin.left + margin.right;
   const svgHeight = height + margin.top + margin.bottom;
  
-  React.useEffect(() => {
+
+  
+
+  useEffect(() => {
     const xScale = d3.scaleTime()
       .domain(d3.extent(data[0].items, (d) => d.date))
       .range([0, width]);
@@ -103,9 +104,9 @@ export const LineChart = ({
 
   console.log(data);
   
-  const svgRef = React.useRef(null);
+  const svgRef = useRef(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
       // Compute values.
 
   const X = d3.map(data, d => new Date(d.time));
@@ -168,9 +169,11 @@ export const LineChart = ({
       .attr("stroke-linejoin", strokeLinejoin)
       .attr("stroke-opacity", strokeOpacity)
       .attr("d", line(I));
-  }, [data]);
+  
+    
+    }, [data]);
 
-  return <svg ref={svgRef} width={svgWidth} height={svgHeight} />;
+    return <svg ref={svgRef} width={svgWidth} height={svgHeight} />;
 }
 
 
