@@ -3,10 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, signOut} from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {auth} from "../firebaseConfig.js"
-import "./login.css";
+import "./Login.css";
 
-
-function Login() {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, loading, error] = useAuthState(auth);
@@ -16,7 +15,7 @@ function Login() {
       // maybe trigger a loading screen
       return;
     }
-    if (user) navigate("/chart");
+    if (user) navigate("/home");
   }, [user, loading]);
   return (
     <div className="login">
@@ -37,7 +36,10 @@ function Login() {
         />
         <button
           className="login__btn"
-          onClick={() => signInWithEmailAndPassword(auth, email, password)}
+          onClick={() => {
+            signInWithEmailAndPassword(auth, email, password);
+            navigate("/home");
+          }}
         >
           Login
         </button>
@@ -48,6 +50,11 @@ function Login() {
 }
 
 
-
-
-export default Login;
+export function logout(){
+  console.log("hello?")
+  signOut(auth).then(() => {
+    // Sign-out successful.
+  }).catch((error) => {
+    // An error happened.
+  });
+}

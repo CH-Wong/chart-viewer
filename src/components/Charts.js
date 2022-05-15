@@ -12,8 +12,6 @@ export const MultilineChart = ({ data, dimensions }) => {
   const svgHeight = height + margin.top + margin.bottom;
  
 
-  
-
   useEffect(() => {
     const xScale = d3.scaleTime()
       .domain(d3.extent(data[0].items, (d) => d.date))
